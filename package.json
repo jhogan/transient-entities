@@ -1,0 +1,22 @@
+{
+  "name": "transient-entities",
+  "version": "0.0.1",
+  "description": "A TypeScript library for managing collections of objects.",
+  "main": "index.js",
+  "scripts": {
+    "test": "node node_modules/.bin/jest ",
+    "test-debug": "node inspect node_modules/.bin/jest "
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jhogan/typescript-transient-entities"
+  },
+  "author": "Jesse Hogan",
+  "license": "ISC",
+  "dependencies": {
+    "ts-jest": "^29.1.2"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.12"
+  }
+}
