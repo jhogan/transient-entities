@@ -52,7 +52,15 @@ export class Entities<T> {
             }
         };
     }
-}
+
+    // Implement the indexer
+    public get(ix: number): T {
+        return this._items[ix];
+    }
+
+    public set(ix: number, value: T): void {
+       this._items[ix] = value;
+    }
 
     public head(n: number = 10): Entities<T> {
         if (n < 0){
