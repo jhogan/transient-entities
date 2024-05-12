@@ -13,40 +13,41 @@ The following example demonstrates how to use the `Entities` collection class
 with the `Coin` and `Coins` classes:
 
 ```typescript
-	import { Entities } from './entities';
+import { Entities } from './entities';
 
-	// Define a Coin class
-	class Coin {
-		private _date: Date;
+// Define a Coin class
+class Coin {
+    private _date: Date;
 
-		constructor(date: Date) {
-			this._date = date;
-		}
+    constructor(date: Date) {
+        this._date = date;
+    }
 
-		get date(): Date {
-			return this._date;
-		}
-	}
+    get date(): Date {
+        return this._date;
+    }
+}
 
-	// Define a Coins class that extends Entities<Coin>
-	class Coins extends Entities<Coin> {}
+// Define a Coins class that extends Entities<Coin>
+class Coins extends Entities<Coin> {}
 
-	// Create a new instance of Coins
-	const coinsCollection = new Coins();
+// Create a new instance of Coins
+const coinsCollection = new Coins();
 
-	// Add coins to the collection
-	const coin1 = new Coin(new Date('2024-01-01'));
-	const coin2 = new Coin(new Date('2024-02-01'));
-	coinsCollection.add(coin1);
-	coinsCollection.add(coin2);
+// Add coins to the collection
+const coin1 = new Coin(new Date('2024-01-01'));
+const coin2 = new Coin(new Date('2024-02-01'));
+coinsCollection.add(coin1);
+coinsCollection.add(coin2);
 
-	// Get the count of coins in the collection
-	const count = coinsCollection.count;
+// Get the count of coins in the collection
+const count = coinsCollection.count;
 
-	// Iterate over the coins in the collection
-	for (const coin of coinsCollection) {
-		console.log(coin.date);
-	}
+// Iterate over the coins in the collection
+for (const coin of coinsCollection) {
+    console.log(coin.date);
+}
+```
 
 ## API
 ### `Entities<T>`
