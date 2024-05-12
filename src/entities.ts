@@ -54,3 +54,23 @@ export class Entities<T> {
     }
 }
 
+    public head(n: number = 10): Entities<T> {
+        if (n < 0){
+            throw new RangeError('n must be 0 or greater');
+        }
+        if (n > this.count){
+            throw new RangeError(
+                "Requested number of objects exceeds " +
+                "the length of the collection."
+            );
+        }
+
+        const r: Entities<T> = new Entities();
+
+        for(let i: number = 0; i < n; i++){
+            r.add(this.get(i));
+        }
+
+        return r;
+    }
+}

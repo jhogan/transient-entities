@@ -88,4 +88,60 @@ describe('Entities', () => {
         // Act & Assert
         expect(cs.count).toBe(4);
     });
+
+    test('It calls head with default argument', () => {
+        // Arrange
+        const cs = new Coins();
+        for (let i = 2000; i < 2100; i++){
+            cs.add(new Coin(new Date(`${i}-01-01`)));
+        }
+
+        // Act 
+        let head: Coins = cs.head();
+
+        // Assert
+        expect(head.count).toBe(10)
+
+        for (let i = 2000; i < 2010; i++){
+            let expected: Date = cs.get(i - 2000).date;
+            expect(expected).toEqual(new Date(`${i}-01-01`));
+        }
+    });
+
+    test('It calls head with non-default argument', () => {
+        // Arrange
+        const cs = new Coins();
+        for (let i = 2000; i < 2100; i++){
+            cs.add(new Coin(new Date(`${i}-01-01`)));
+        }
+
+        // Act and Assert
+
+        expect(cs.head(0).count).toBe(0)
+        expect(cs.head(20).count).toBe(20)
+
+        for (let i = 2000; i < 2020; i++){
+            let expected: Date = cs.get(i - 2000).date;
+            expect(expected).toEqual(new Date(`${i}-01-01`));
+        }
+    });
+
+    test('Head throws RangeError when argument is out of range', () => {
+        // Arrange
+        const cs = new Coins();
+
+        // Act and Assert
+        expect(() => cs.head(1)).toThrow(RangeError);
+
+        // Arrange
+        for (let i = 2000; i < 2010; i++){
+            cs.add(new Coin(new Date(`${i}-01-01`)));
+        }
+
+        // Act & Assert
+        expect(() => cs.head(cs.count + 1)).toThrow(RangeError);
+
+        expect(() => cs.head(-1)).toThrow(RangeError);
+    })
+    
 });
