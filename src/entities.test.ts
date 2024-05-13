@@ -146,5 +146,60 @@ describe('Entities', () => {
 
         expect(() => cs.head(-1)).toThrow(RangeError);
     })
+
+    test('It calls tail with default argument', () => {
+        // Arrange
+        const cs = new Coins();
+        for (let i = 2000; i < 2100; i++) {
+            cs.add(new Coin(new Date(`${i}-01-01`)));
+        }
+
+        // Act
+        let tail: Coins = cs.tail();
+
+        // Assert
+        expect(tail.count).toBe(10);
+
+        for (let i = 2090; i < 2100; i++) {
+            let expected = tail.get(i - 2090).date;
+            expect(expected).toEqual(new Date(`${i}-01-01`));
+        }
+    });
+
+    test('It calls tail with non-default argument', () => {
+        // Arrange
+        const cs = new Coins();
+        for (let i = 2000; i < 2100; i++) {
+            cs.add(new Coin(new Date(`${i}-01-01`)));
+        }
+        const tail: Coins = cs.tail(20);
+
+        // Act & Assert
+        expect(cs.tail(0).count).toBe(0);
+        expect(tail.count).toBe(20);
+
+        for (let i = 2080; i < 2100; i++) {
+            let expected = tail.get(i - 2080).date;
+            expect(expected).toEqual(new Date(`${i}-01-01`));
+        }
+    });
+
+    test('Tail throws RangeError when argument is out of range', () => {
+        // Arrange
+        const cs = new Coins();
+
+        // Act & Assert
+        expect(() => cs.tail(1)).toThrow(RangeError);
+
+        // Arrange
+        for (let i = 2000; i < 2010; i++) {
+            cs.add(new Coin(new Date(`${i}-01-01`)));
+        }
+
+        // Act & Assert
+        expect(() => cs.tail(cs.count + 1)).toThrow(RangeError);
+        expect(() => cs.tail(-1)).toThrow(RangeError);
+    });
+
     
 });
