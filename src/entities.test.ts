@@ -116,12 +116,15 @@ describe('Entities', () => {
         }
 
         // Act and Assert
-
         expect(cs.head(0).count).toBe(0)
         expect(cs.head(20).count).toBe(20)
 
+        // Act
+        const head: Coins = cs.head(20)
+
+        // Assert
         for (let i = 2000; i < 2020; i++){
-            let expected: Date = cs.get(i - 2000).date;
+            let expected: Date = head.get(i - 2000).date;
             expect(expected).toEqual(new Date(`${i}-01-01`));
         }
     });
