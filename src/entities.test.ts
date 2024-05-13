@@ -79,7 +79,7 @@ describe('Entities', () => {
 
     test('should allow extended entity objects', () => {
         // Arrange
-        const cs = new Coins();
+        const cs: Coins = new Coins();
         cs.add(new Penny(new Date('2020-01-01'), 'wheat'));
         cs.add(new Penny(new Date('2021-01-01'), 'lincoln'));
         cs.add(new Penny(new Date('2022-01-01'), 'lincoln'));
@@ -92,7 +92,7 @@ describe('Entities', () => {
     test('It calls head with default argument', () => {
         // Arrange
         const cs = new Coins();
-        for (let i = 2000; i < 2100; i++){
+        for (let i: number = 2000; i < 2100; i++){
             cs.add(new Coin(new Date(`${i}-01-01`)));
         }
 
@@ -102,8 +102,8 @@ describe('Entities', () => {
         // Assert
         expect(head.count).toBe(10)
 
-        for (let i = 2000; i < 2010; i++){
-            let expected: Date = cs.get(i - 2000).date;
+        for (let i: number = 2000; i < 2010; i++){
+            let expected: Date = head.get(i - 2000).date;
             expect(expected).toEqual(new Date(`${i}-01-01`));
         }
     });
