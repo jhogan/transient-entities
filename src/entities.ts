@@ -62,7 +62,15 @@ export class Entities<T> {
        this._items[ix] = value;
     }
 
+    public tail(n: number = 10): Entities<T> {
+        return this.get_extremities(n, false);
+    }
+
     public head(n: number = 10): Entities<T> {
+        return this.get_extremities(n, true);
+    }
+
+    private get_extremities(n: number, head: boolean): Entities<T> {
         if (n < 0){
             throw new RangeError('n must be 0 or greater');
         }
@@ -72,10 +80,12 @@ export class Entities<T> {
                 "the length of the collection."
             );
         }
-
+        
         const r: Entities<T> = new Entities();
 
-        for(let i: number = 0; i < n; i++){
+        let stop: number = head ? n: this.count;
+        
+        for(let i = head ? 0 : this.count - n; i < stop; i++){
             r.add(this.get(i));
         }
 
