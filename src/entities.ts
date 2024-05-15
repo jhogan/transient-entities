@@ -21,36 +21,12 @@ export class Entities<T> {
         return this._items.length;
     }
 
-    /**
-     * Returns iterator object that iterates over collection.  
-     * @returns An iterator object for iterating over the
-     * items in the collection.
-     */
-    [Symbol.iterator](): Iterator<T> {
-        let ix = 0;
-        let items = this._items;
+    *[Symbol.iterator](): IterableIterator<T> {
+        for (const item of this._items) {
+            yield item;
+        }
+    }
 
-        return {
-            /**
-             * Advances iterator; returns the next item.
-             * @returns An IteratorResult containing the next item.
-             */
-            next(): IteratorResult<T> {
-                if (ix < items.length) {
-                    return {
-                        done: false,
-                        // Return the next item and advance the index
-                        value: items[ix++] 
-                    };
-                } else {
-                    return {
-                        done: true,
-                        // Signal that the iterator has reached the end
-                        value: null as any 
-                    };
-                }
-            }
-        };
     }
 
     // Implement the indexer
