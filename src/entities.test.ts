@@ -201,5 +201,38 @@ describe('Entities', () => {
         expect(() => cs.tail(-1)).toThrow(RangeError);
     });
 
-    
+    test('It enumerates', () => {
+        // Arrange
+        const cs = new Coins();
+
+        // Arrange
+        for (let i = 2000; i < 2010; i++) {
+            cs.add(new Coin(new Date(`${i}-01-01`)));
+        }
+
+        // Act & Assert
+        let i = 0;
+        for (const [ix, c] of cs.enumerate()){
+            expect(cs.get(ix)).toBe(c);
+            expect(i).toBe(i++);
+		}
+    });
+
+    test('enumerate should work with empty collection', () => {
+        // Arrange
+        const entities = new Entities<Coin>();
+
+        // Act
+        const result = entities.enumerate();
+
+        // Assert
+        expect([...result]).toEqual([]);
+    });
+    test('enumerate returns correct type', () => {
+        // Arrange
+        const cs = new Entities<Coin>();
+
+        // Act
+        const result: Iterable<[number, Coin]> = cs.enumerate();
+    });
 });

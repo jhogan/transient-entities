@@ -27,6 +27,11 @@ export class Entities<T> {
         }
     }
 
+    *enumerate(): Iterable<[number, T]> {
+        let index = 0;
+        for (const item of this) {
+            yield [index++, item];
+        }
     }
 
     // Implement the indexer
