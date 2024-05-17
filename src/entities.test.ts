@@ -227,6 +227,7 @@ describe('Entities', () => {
         // Assert
         expect([...result]).toEqual([]);
     });
+
     test('enumerate returns correct type', () => {
         // Arrange
         const cs = new Entities<Coin>();

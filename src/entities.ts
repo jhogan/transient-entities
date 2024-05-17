@@ -9,7 +9,7 @@ export class Entities<T> {
      * Adds an item to the collection.
      * @param item The item to add to the collection.
      */
-    add(item: T): void {
+    public add(item: T): void {
         this._items.push(item);
     }
 
@@ -17,30 +17,21 @@ export class Entities<T> {
      * Gets the number of items in the collection.
      * @returns The number of items in the collection.
      */
-    get count(): number {
+    public get count(): number {
         return this._items.length;
     }
 
-    *[Symbol.iterator](): IterableIterator<T> {
+    public *[Symbol.iterator](): IterableIterator<T> {
         for (const item of this._items) {
             yield item;
         }
     }
 
-    *enumerate(): Iterable<[number, T]> {
+    public *enumerate(): Iterable<[number, T]> {
         let index = 0;
         for (const item of this) {
             yield [index++, item];
         }
-    }
-
-    // Implement the indexer
-    public get(ix: number): T {
-        return this._items[ix];
-    }
-
-    public set(ix: number, value: T): void {
-       this._items[ix] = value;
     }
 
     public tail(n: number = 10): Entities<T> {
@@ -72,4 +63,14 @@ export class Entities<T> {
 
         return r;
     }
+
+    // Implement the indexer
+    public get(ix: number): T {
+        return this._items[ix];
+    }
+
+    public set(ix: number, value: T): void {
+       this._items[ix] = value;
+    }
+
 }
