@@ -73,4 +73,19 @@ export class Entities<T> {
        this._items[ix] = value;
     }
 
+    public sort(...attrs: string[]): void{
+        this._items.sort((a: T, b: T) => {
+            for (const attr of attrs){
+                const aval: any = (a as any)[attr];
+                const bval: any = (b as any)[attr];
+
+                if (aval < bval){
+                    return -1;
+                }else if(aval > bval){
+                    return 1;
+                }
+            }
+            return 0;
+        });
+    }
 }

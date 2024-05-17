@@ -235,4 +235,82 @@ describe('Entities', () => {
         // Act
         const result: Iterable<[number, Coin]> = cs.enumerate();
     });
+
+    test('it call get', () => {
+        // Arrange
+        const cs = new Coins();
+        for (let i = 2000; i < 2100; i++) {
+            cs.add(new Coin(new Date(`${i}-01-01`)));
+        }
+
+        // Act and Assert
+        for (const [i, c] of cs.enumerate()){
+            expect(cs.get(i)).toEqual(c);
+        }
+        
+    });
+
+    test('it calls set', () => {
+        // Arrange
+        const cs = new Coins();
+        for (let i = 2000; i < 2001; i++) {
+            cs.add(new Coin(new Date(`${i}-01-01`)));
+        }
+
+        // Act
+        cs.set(1, new Coin(new Date('3000-01-01')));
+
+        // Assert
+
+        expect(cs.get(0).date).toEqual(new Date('2000-01-01'));
+        expect(cs.get(1).date).toEqual(new Date('3000-01-01'));
+
+    });
+
+    test('it calls sort with one key', () => {
+        // Arrange
+        const cs = new Coins();
+        for (let i = 2003; i >= 2000; i--) {
+            cs.add(new Coin(new Date(`${i}-01-01`)));
+        }
+
+        // Act
+        cs.sort('date');
+
+        expect(cs.get(0).date).toEqual(new Date('2000-01-01'));
+        expect(cs.get(1).date).toEqual(new Date('2001-01-01'));
+        expect(cs.get(2).date).toEqual(new Date('2002-01-01'));
+        expect(cs.get(3).date).toEqual(new Date('2003-01-01'));
+    });
+
+    test('it calls sort with two keys', () => {
+        // Arrange
+        const cs = new Coins();
+        cs.add(new Penny(new Date(`2000-01-01`), 'wheat'));
+        cs.add(new Penny(new Date(`2000-01-01`), 'bicentennial'));
+        cs.add(new Penny(new Date(`2000-01-01`), 'steal'));
+
+        cs.add(new Penny(new Date(`2001-01-01`), 'wheat'));
+        cs.add(new Penny(new Date(`2001-01-01`), 'bicentennial'));
+        cs.add(new Penny(new Date(`2001-01-01`), 'steal'));
+
+        const sorted = [
+            [new Date('2000-01-01'), 'bicentennial'],
+            [new Date('2000-01-01'), 'steal'],
+            [new Date('2000-01-01'), 'wheat'],
+
+            [new Date('2001-01-01'), 'bicentennial'],
+            [new Date('2001-01-01'), 'steal'],
+            [new Date('2001-01-01'), 'wheat'],
+        ];
+
+        // Act
+        cs.sort('date', 'type');
+
+        for (const [i, p] of cs.enumerate()){
+            expect(p.date).toEqual(sorted[i][0]);
+            expect(p.type).toEqual(sorted[i][1]);
+            
+        }
+    });
 });
