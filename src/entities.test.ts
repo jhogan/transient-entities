@@ -5,13 +5,15 @@ import { Entities } from './entities';
  */
 class Coin {
     private _date: Date;
+    private _type: string | null;
 
     /**
      * Creates an instance of Coin.
      * @param date The date associated with the coin.
      */
-    constructor(date: Date) {
+    constructor(date: Date, type: string | null = null) {
         this._date = date;
+        this._type = type;
     }
 
     /**
@@ -21,23 +23,20 @@ class Coin {
     get date(): Date {
         return this._date;
     }
+
+    get type(): string | null{
+        return this._type;
+    }
+
+    set type(value: string){
+        this._type = value;
+    }
 }
 
 /**
  * Represents a Penny, a subtype of Coin, with an additional type property.
  */
 class Penny extends Coin {
-    private _type: string;
-
-    /**
-     * Creates an instance of Penny.
-     * @param date The date associated with the penny.
-     * @param type The type of the penny.
-     */
-    constructor(date: Date, type: string) {
-        super(date);
-        this._type = type;
-    }
 }
 
 /**
@@ -80,10 +79,10 @@ describe('Entities', () => {
     test('should allow extended entity objects', () => {
         // Arrange
         const cs: Coins = new Coins();
-        cs.add(new Penny(new Date('2020-01-01'), 'wheat'));
-        cs.add(new Penny(new Date('2021-01-01'), 'lincoln'));
-        cs.add(new Penny(new Date('2022-01-01'), 'lincoln'));
-        cs.add(new Penny(new Date('2023-01-01'), 'indian'));
+        cs.add(new Penny(new Date('2020-01-01')));
+        cs.add(new Penny(new Date('2021-01-01')));
+        cs.add(new Penny(new Date('2022-01-01')));
+        cs.add(new Penny(new Date('2023-01-01')));
 
         // Act & Assert
         expect(cs.count).toBe(4);
