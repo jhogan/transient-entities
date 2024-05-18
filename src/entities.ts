@@ -114,8 +114,30 @@ export class Entities<T> {
 
     /**
      * Sorts the collection based on the specified attributes.
-     * @param attrs The attributes to sort by. Multiple attributes can
-     * be specified.
+     * The attributes can be followed by an optional order (asc or desc).
+     * If no order is specified, the default is ascending (asc).
+     *
+     * @param ...attrs The attributes to sort by. Each attribute can 
+     *                 be followed by an optional order (Order.Asc or 
+     *                 Order.Desc).
+     * 
+     * @example
+     * // Sort by 'age' in ascending order (default order)
+     * entities.sort('age');
+     *
+     * @example
+     * // Sort by 'age' in descending order
+     * entities.sort('age', Order.Desc);
+     * 
+     * @example
+     * // Sort by 'age' in ascending order then my name in ascending
+     * order
+     * entities.sort('age', 'name')
+     * 
+     * @example
+     * // Sort by 'name' in ascending order, then by 'age' in 
+     * // descending order
+     * entities.sort('name', Order.Asc, 'age', Order.Desc);
      */
     public sort(...attrs: (string | Order)[]): void {
         this._items.sort((a: T, b: T) => {
