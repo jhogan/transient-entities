@@ -80,7 +80,17 @@ export class Entities<T> {
      */
     public sort(...attrs: (string | Order)[]): void {
         this._items.sort((a: T, b: T) => {
-            for (const attr of attrs){
+            for (let i = 0; i <= attrs.length; i++){
+                const attr = attrs[i] as string;
+                let ord = attrs[i + 1] as Order;
+
+                if (ord == Order.Asc || ord == Order.Desc){
+                    i++;
+                }else{
+                    ord = Order.Asc;
+                }
+
+                // Using 'as any' to access the attribute dynamically
                 const aval: any = (a as any)[attr];
                 const bval: any = (b as any)[attr];
 
