@@ -141,11 +141,11 @@ export class Entities<T> {
      */
     public sort(...attrs: (string | Order)[]): void {
         this._items.sort((a: T, b: T) => {
-            for (let i = 0; i <= attrs.length; i++){
+            for (let i = 0; i < attrs.length; i++){
                 const attr = attrs[i] as string;
                 let ord = attrs[i + 1] as Order;
 
-                if (ord == Order.Asc || ord == Order.Desc){
+                if (ord === Order.Asc || ord === Order.Desc){
                     i++;
                 }else{
                     ord = Order.Asc;
