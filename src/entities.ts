@@ -27,6 +27,11 @@ export class Entities<T> {
         }
     }
 
+    /**
+    * Provides an enumerated iterator for the collection.
+    * This yields both the index and the item at that index.
+    * @yields A tuple containing the index and the item.
+    */
     public *enumerate(): Iterable<[number, T]> {
         let index = 0;
         for (const item of this) {
@@ -34,14 +39,40 @@ export class Entities<T> {
         }
     }
 
+    /**
+    * Returns the last `n` items in the collection.
+    * @param n The number of items to retrieve from the end. Defaults
+    * to 10.
+    * @returns A new Entities instance containing the last `n` items.
+    * @throws RangeError if `n` is negative or exceeds the number of
+    * items in the collection.
+    */
     public tail(n: number = 10): Entities<T> {
         return this.get_extremities(n, false);
     }
 
+    /**
+    * Returns the first `n` items in the collection.
+    * @param n The number of items to retrieve from the beginning.
+    * Defaults to 10.
+    * @returns A new Entities instance containing the first `n` items.
+    * @throws RangeError if `n` is negative or exceeds the number of
+    * items in the collection.
+    */
     public head(n: number = 10): Entities<T> {
         return this.get_extremities(n, true);
     }
 
+    /**
+    * Returns the first or last `n` items in the collection based on
+    * the `head` parameter.
+    * @param n The number of items to retrieve.
+    * @param head If true, retrieves the first `n` items; otherwise,
+    * retrieves the last `n` items.
+    * @returns A new Entities instance containing the specified items.
+    * @throws RangeError if `n` is negative or exceeds the number of
+    * items in the collection.
+    */
     private get_extremities(n: number, head: boolean): Entities<T> {
         if (n < 0){
             throw new RangeError('n must be 0 or greater');
@@ -52,23 +83,31 @@ export class Entities<T> {
                 "the length of the collection."
             );
         }
-        
+
         const r: Entities<T> = new Entities();
 
-        let stop: number = head ? n: this.count;
-        
+        let stop: number = head ? n : this.count;
+
         for(let i = head ? 0 : this.count - n; i < stop; i++){
             r.add(this.get(i));
         }
 
         return r;
     }
-
-    // Implement the indexer
+    /**
+     * Implements an indexer to get an item at a specific index.
+     * @param ix The index of the item to retrieve.
+     * @returns The item at the specified index.
+     */
     public get(ix: number): T {
         return this._items[ix];
     }
 
+    /**
+     * Implements an indexer to set an item at a specific index.
+     * @param ix The index where the item should be set.
+     * @param value The item to set at the specified index.
+     */
     public set(ix: number, value: T): void {
        this._items[ix] = value;
     }
