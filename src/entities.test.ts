@@ -6,14 +6,20 @@ import { Order, Entities } from './entities';
 class Coin {
     private _date: Date;
     private _type: string | null;
+    private _weight: number | null;
 
     /**
      * Creates an instance of Coin.
      * @param date The date associated with the coin.
      */
-    constructor(date: Date, type: string | null = null) {
+    constructor(
+        date: Date, 
+        type: string | null = null,
+        weight: number | null = null,
+    ) {
         this._date = date;
         this._type = type;
+        this._weight = weight;
     }
 
     /**
@@ -31,6 +37,10 @@ class Coin {
     set type(value: string){
         this._type = value;
     }
+
+    get weight(): number | null{
+        return this._weight;
+    }  
 }
 
 /**
