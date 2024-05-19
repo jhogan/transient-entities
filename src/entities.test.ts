@@ -68,6 +68,24 @@ describe('Entities', () => {
         expect(cs.count).toBe(1);
     });
 
+    test('it adds an entities collection', () => {
+        // Arrange
+        const cs = new Coins();
+        cs.add(new Coin(new Date('2020-01-01')));
+
+        const cs1 = new Coins();
+        cs1.add(new Coin(new Date('2021-01-01')));
+        cs1.add(new Coin(new Date('2022-01-01')));
+
+        // Act
+        cs.add(cs1);
+
+        // Assert
+        expect(cs.get(0).date).toEqual(new Date('2020-01-01'));
+        expect(cs.get(1).date).toEqual(new Date('2021-01-01'));
+        expect(cs.get(2).date).toEqual(new Date('2022-01-01'));
+    });
+
     test('should iterate', () => {
         // Arrange
         const cs = new Coins();

@@ -31,8 +31,14 @@ export class Entities<T> {
      * collection.add(subCollection); 
      * ```
      */
-    public add(item: T): void {
-        this._items.push(item);
+    public add(item: T | Entities<T>): void {
+        if (item instanceof Entities){
+            for (const item1 of item){
+                this.add(item1);
+            }
+        }else{
+            this._items.push(item);
+        }
     }
 
     /** 
