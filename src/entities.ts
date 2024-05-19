@@ -7,7 +7,29 @@ export class Entities<T> {
 
     /**
      * Adds an item to the collection.
-     * @param item The item to add to the collection.
+     * 
+     * This method can accept either an item of type T or another
+     * instance of Entities containing items of type T.  If the item is
+     * an instance of Entities, it will recursively add all items from
+     * that instance to the current collection.
+     *
+     * @param item The item to add to the collection. Can be of type T
+     *             or another instance of Entities<T>.
+     * 
+     * Examples:
+     * ```
+     * const collection = new Entities<SomeTypeT>();
+     * const item = new SomeTypeT('example');
+     *
+     * // Adds a single item of type SomeTypeT
+     * collection.add(item); 
+     * 
+     * const subCollection = new Entities<SomeTypeT>();
+     * subCollection.add(new SomeTypeT('another example'));
+     * 
+     * // Adds all items from subCollection to collection
+     * collection.add(subCollection); 
+     * ```
      */
     public add(item: T): void {
         this._items.push(item);
@@ -130,7 +152,7 @@ export class Entities<T> {
      * entities.sort('age', Order.Desc);
      * 
      * @example
-     * // Sort by 'age' in ascending order then my name in ascending
+     * // Sort by 'age' in ascending order then my 'name' in ascending
      * order
      * entities.sort('age', 'name')
      * 
@@ -163,6 +185,49 @@ export class Entities<T> {
             }
             return 0;
         });
+    }
+
+    /**
+     * Returns a new sorted instance of the collection based on the
+     * specified attributes.
+     * 
+     * This method creates a clone of the current collection, sorts the
+     * cloned collection, and then returns the sorted clone. The sorting
+     * logic and more details can be found in the `sort` method.
+     * 
+     * @param ...attrs The attributes to sort by. Each attribute can 
+     *                 be followed by an optional order (Order.Asc or 
+     *                 Order.Desc).
+     * 
+     * @example
+     * // Create a sorted copy of the collection by 'age' in ascending
+     * order (default order)
+     * const sortedCollection = entities.sorted('age');
+     * 
+     * @example
+     * // Create a sorted copy of the collection by 'age' in descending
+     * order
+     * const sortedCollection = entities.sorted('age', Order.Desc);
+     * 
+     * @example
+     * // Create a sorted copy of the collection by 'age' in ascending
+     * order then by 'name' in ascending order
+     * const sortedCollection = entities.sorted('age', 'name');
+     * 
+     * @example
+     * // Create a sorted copy of the collection by 'name' in ascending
+     * order, then by 'age' in descending order
+     * const sortedCollection = entities.sorted('name', Order.Asc, 'age', Order.Desc);
+     */
+    public sorted(...attrs: (string | Order)[]): Entities<T>{
+        // Clone
+        const ctor = this.constructor as { new(): Entities<T> };
+        const r = new ctor();
+
+        r.add(this);
+
+        r.sort(...attrs);
+        return r;
     }
 }
 

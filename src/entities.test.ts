@@ -56,7 +56,7 @@ class Coins extends Entities<Coin | Penny> {
 }
 
 describe('Entities', () => {
-    test('should add an object', () => {
+    test('it adds an object', () => {
         // Arrange
         const cs = new Coins();
         const c = new Coin(new Date('2024-01-01'));
