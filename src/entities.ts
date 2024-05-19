@@ -5,6 +5,9 @@ export class Entities<T> {
     /** The array to store items of type T. */
     protected _items: T[] = [];
 
+    public constructor(){
+    }
+
     /**
      * Adds an item to the collection.
      * 

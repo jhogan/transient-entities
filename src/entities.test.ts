@@ -461,4 +461,171 @@ describe('Entities', () => {
             expect(p.weight).toEqual(sorted[i][2]);
         }
     });
+
+    test('it calls sorted with one key', () => {
+        // Arrange
+        const cs: Coins = new Coins();
+        for (let i = 2003; i >= 2000; i--) {
+            cs.add(new Coin(new Date(`${i}-01-01`)));
+        }
+
+        // Act
+        const cs1: Coins = cs.sorted('date');
+
+        expect(cs1.get(0).date).toEqual(new Date('2000-01-01'));
+        expect(cs1.get(1).date).toEqual(new Date('2001-01-01'));
+        expect(cs1.get(2).date).toEqual(new Date('2002-01-01'));
+        expect(cs1.get(3).date).toEqual(new Date('2003-01-01'));
+    });
+
+    test('it calls sorted with two keys', () => {
+        // Arrange
+        const cs = new Coins();
+        cs.add(new Penny(new Date(`2000-01-01`), 'wheat'));
+        cs.add(new Penny(new Date(`2000-01-01`), 'bicentennial'));
+        cs.add(new Penny(new Date(`2000-01-01`), 'steal'));
+
+        cs.add(new Penny(new Date(`2001-01-01`), 'wheat'));
+        cs.add(new Penny(new Date(`2001-01-01`), 'bicentennial'));
+        cs.add(new Penny(new Date(`2001-01-01`), 'steal'));
+
+        const sorted = [
+            [new Date('2000-01-01'), 'bicentennial'],
+            [new Date('2000-01-01'), 'steal'],
+            [new Date('2000-01-01'), 'wheat'],
+
+            [new Date('2001-01-01'), 'bicentennial'],
+            [new Date('2001-01-01'), 'steal'],
+            [new Date('2001-01-01'), 'wheat'],
+        ];
+
+        // Act
+        const cs1: Entities<Coin> = cs.sorted('date', 'type');
+
+        for (const [i, p] of cs1.enumerate()){
+            expect(p.date).toEqual(sorted[i][0]);
+            expect(p.type).toEqual(sorted[i][1]);
+            
+        }
+    });
+
+    test('it sorted by asc then by desc', () => {
+        // Arrange
+        const cs = new Coins();
+        cs.add(new  Penny(new  Date(`2000-01-01`),  'wheat'));
+        cs.add(new  Penny(new  Date(`2000-01-01`),  'bicentennial'));
+        cs.add(new  Penny(new  Date(`2000-01-01`),  'steal'));
+        cs.add(new  Penny(new  Date(`2001-01-01`),  'wheat'));
+        cs.add(new  Penny(new  Date(`2001-01-01`),  'bicentennial'));
+        cs.add(new  Penny(new  Date(`2001-01-01`),  'steal'));
+
+        const sorted = [
+            [new Date('2000-01-01'), 'wheat'],
+            [new Date('2000-01-01'), 'steal'],
+            [new Date('2000-01-01'), 'bicentennial'],
+
+            [new Date('2001-01-01'), 'wheat'],
+            [new Date('2001-01-01'), 'steal'],
+            [new Date('2001-01-01'), 'bicentennial'],
+        ];
+
+        // Act
+        const cs1: Coins = cs.sorted('date', Order.Asc, 'type', Order.Desc);
+
+        for (const [i, p] of cs1.enumerate()){
+            expect(p.date).toEqual(sorted[i][0]);
+            expect(p.type).toEqual(sorted[i][1]);
+        }
+    });
+
+    test('it sorted by asc, desc then by asc', () => {
+        // Arrange
+        const cs = new Coins();
+        cs.add(new  Penny(new  Date(`2001-01-01`),  'steal',         2));
+        cs.add(new  Penny(new  Date(`2001-01-01`),  'steal',         9));
+        cs.add(new  Penny(new  Date(`2001-01-01`),  'bicentennial',  1));
+        cs.add(new  Penny(new  Date(`2000-01-01`),  'steal',         4));
+        cs.add(new  Penny(new  Date(`2000-01-01`),  'wheat',         1));
+        cs.add(new  Penny(new  Date(`2000-01-01`),  'steal',         3));
+        cs.add(new  Penny(new  Date(`2001-01-01`),  'wheat',         1));
+        cs.add(new  Penny(new  Date(`2000-01-01`),  'steal',         5));
+        cs.add(new  Penny(new  Date(`2001-01-01`),  'steal',         3));
+        cs.add(new  Penny(new  Date(`2000-01-01`),  'bicentennial',  1));
+
+        const sorted = [
+            [new  Date('2000-01-01'),  'wheat',         1],
+            [new  Date('2000-01-01'),  'steal',         3],
+            [new  Date('2000-01-01'),  'steal',         4],
+            [new  Date('2000-01-01'),  'steal',         5],
+            [new  Date('2000-01-01'),  'bicentennial',  1],
+            [new  Date('2001-01-01'),  'wheat',         1],
+            [new  Date('2001-01-01'),  'steal',         2],
+            [new  Date('2001-01-01'),  'steal',         3],
+            [new  Date('2001-01-01'),  'steal',         9],
+            [new  Date('2001-01-01'),  'bicentennial',  1],
+        ];
+
+        // Act
+        let cs1: Coins = cs.sorted('date', Order.Asc, 'type', Order.Desc, 'weight');
+
+        // Assert
+        for (const [i, p] of cs1.enumerate()){
+            expect(p.date).toEqual(sorted[i][0]);
+            expect(p.type).toEqual(sorted[i][1]);
+            expect(p.weight).toEqual(sorted[i][2]);
+        }
+
+        // Act
+        cs1 = cs.sorted(
+            'date', Order.Asc, 'type', Order.Desc, 'weight', Order.Asc
+        );
+
+        // Assert
+        for (const [i, p] of cs1.enumerate()){
+            expect(p.date).toEqual(sorted[i][0]);
+            expect(p.type).toEqual(sorted[i][1]);
+            expect(p.weight).toEqual(sorted[i][2]);
+        }
+    });
+
+    test('it sorted by desc, asc then by desc', () => {
+        // Arrange
+        const cs = new Coins();
+        cs.add(new  Penny(new  Date(`2001-01-01`),  'steal',         2));
+        cs.add(new  Penny(new  Date(`2001-01-01`),  'steal',         9));
+        cs.add(new  Penny(new  Date(`2001-01-01`),  'bicentennial',  1));
+        cs.add(new  Penny(new  Date(`2000-01-01`),  'steal',         4));
+        cs.add(new  Penny(new  Date(`2000-01-01`),  'wheat',         1));
+        cs.add(new  Penny(new  Date(`2000-01-01`),  'steal',         3));
+        cs.add(new  Penny(new  Date(`2001-01-01`),  'wheat',         1));
+        cs.add(new  Penny(new  Date(`2000-01-01`),  'steal',         5));
+        cs.add(new  Penny(new  Date(`2001-01-01`),  'steal',         3));
+        cs.add(new  Penny(new  Date(`2000-01-01`),  'bicentennial',  1));
+
+        const sorted = [
+            [new  Date('2001-01-01'),  'bicentennial',  1],
+            [new  Date('2001-01-01'),  'steal',         9],
+            [new  Date('2001-01-01'),  'steal',         3],
+            [new  Date('2001-01-01'),  'steal',         2],
+            [new  Date('2001-01-01'),  'wheat',         1],
+
+            [new  Date('2000-01-01'),  'bicentennial',  1],
+            [new  Date('2000-01-01'),  'steal',         5],
+            [new  Date('2000-01-01'),  'steal',         4],
+            [new  Date('2000-01-01'),  'steal',         3],
+            [new  Date('2000-01-01'),  'wheat',         1],
+        ];
+
+        // Act
+        const cs1: Coins = cs.sorted(
+            'date', Order.Desc, 'type', Order.Asc, 'weight', Order.Desc
+        );
+
+        // Assert
+        for (const [i, p] of cs1.enumerate()){
+            expect(p.date).toEqual(sorted[i][0]);
+            expect(p.type).toEqual(sorted[i][1]);
+            expect(p.weight).toEqual(sorted[i][2]);
+        }
+    });
 });
